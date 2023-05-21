@@ -17,9 +17,9 @@ final UserModel user;
 class _MenuPageState extends State<MenuPage> {
 
     // User object to determine role
- 
+
   List<CartItem> cartItems = [];
-  List<MenuItem> menuItems = [];
+  Future<List<MenuItem>> menuItems = FirestoreMethods().getItemList();
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +27,15 @@ class _MenuPageState extends State<MenuPage> {
     bool isAdmin = widget.user.role == Userrole.customer;
 
     return Scaffold(
-      body: Center(
-        child: ListView.builder(
+      body: 
+        FutureBuilder<List<MenuItem>>(
+          future: menuItems,
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return CircularProgressIndicator();
+            }
+            final menuItems = snapshot.data!;
+         return ListView.builder(
           itemCount: menuItems.length,
           itemBuilder: (context, index) {
             MenuItem menuItem = menuItems[index];
@@ -46,8 +53,9 @@ class _MenuPageState extends State<MenuPage> {
               },
             );
           },
+        );
+          },
         ),
-      ),
       floatingActionButton: isAdmin
           ? FloatingActionButton(
               onPressed: () {
@@ -147,7 +155,7 @@ class _MenuPageState extends State<MenuPage> {
           .addnewitem(itemName, itemPrice, itemAvailability,int.parse(itemQuantity));
                 // Add the new menu item to the list
                 setState(() {
-                  menuItems.add(newItem);
+                  menuItems = FirestoreMethods().getItemList();
                 });
                 Navigator.pop(context);
               },

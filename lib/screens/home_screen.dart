@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 
 import '../models/menu_item.dart';
@@ -55,8 +57,11 @@ class _HomePageState extends State<HomePage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.shopping_cart),
-            label: 'Cart',
-            
+            label: 'Cart',),
+          if (widget.user!.role != Userrole.admin)
+            BottomNavigationBarItem(
+              icon: Icon(Icons.admin_panel_settings),
+              label: 'Admin Panel',            
           ),
         ],
       ),
@@ -69,8 +74,13 @@ class _HomePageState extends State<HomePage> {
         return MenuPage(user: widget.user!);
       case 1:
         return CartScreen();
+        
       case 2:
-        return AdminPanelScreen();
+        if (widget.user!.role  != Userrole.admin) {
+          return AdminPage(user: widget.user!);
+        } else {
+          return Container();
+        }
       default:
         return Container();
     }
