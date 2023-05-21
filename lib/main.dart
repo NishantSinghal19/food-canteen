@@ -46,7 +46,7 @@ Widget build(BuildContext context) {
     debugShowCheckedModeBanner: false,
     theme: ThemeData(
       brightness: Brightness.light,
-      primarySwatch: Colors.blue,
+      primarySwatch: Colors.orange,
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           textStyle: const TextStyle(
@@ -58,7 +58,7 @@ Widget build(BuildContext context) {
       textTheme: TextTheme(
         headline1: TextStyle(
           fontSize: 46.0,
-          color: Colors.blue.shade700,
+          color: const Color.fromARGB(255, 210, 133, 25),
           fontWeight: FontWeight.w500,
         ),
         bodyText1: const TextStyle(fontSize: 18.0),

@@ -27,6 +27,7 @@ class _MenuPageState extends State<MenuPage> {
     bool isAdmin = widget.user.role == Userrole.customer;
 
     return Scaffold(
+      backgroundColor: Color.fromARGB(105, 253, 227, 202),
       body: 
         FutureBuilder<List<MenuItem>>(
           future: menuItems,
@@ -39,18 +40,25 @@ class _MenuPageState extends State<MenuPage> {
           itemCount: menuItems.length,
           itemBuilder: (context, index) {
             MenuItem menuItem = menuItems[index];
-            return ListTile(
-              title: Text(menuItem.name),
-              subtitle: Text(menuItem.price.toString()),
-              trailing: Text(menuItem.isAvailable ? 'Available' : 'Not Available'),
-              
-              onTap: () {
-                cartProvider.addToCart(CartItem(
-                  name: menuItem.name,
-                  price: menuItem.price,
-                  quantity: 1,
-                ));
-              },
+            return Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0), // Border radius value
+                color: Color.fromARGB(255, 254, 250, 246) // Background color of the container
+                
+              ),
+              margin: EdgeInsets.fromLTRB(5,5,5,5),
+              child: ListTile(
+                  title: Text(menuItem.name, style: TextStyle(fontWeight: menuItem.isAvailable ? FontWeight.w500 : FontWeight.normal, fontSize: menuItem.isAvailable ? 18 : 14)),
+                  subtitle: Text('\u20B9' + menuItem.price.toString(),  style: TextStyle(fontSize: menuItem.isAvailable ? 14 : 12)),
+                  trailing: Text(menuItem.isAvailable ? 'Available' : 'Not Available', style: TextStyle(color: menuItem.isAvailable ? Colors.green : Colors.red)),
+                  onTap: () {
+                    cartProvider.addToCart(CartItem(
+                      name: menuItem.name,
+                      price: menuItem.price,
+                      quantity: 1,
+                    ));
+                  },
+                ),
             );
           },
         );
@@ -124,7 +132,7 @@ class _MenuPageState extends State<MenuPage> {
               ),
               CheckboxListTile(
                 value: itemAvailability,
-                onChanged: (value) {
+                onChanged: (bool? value) {
                   setState(() {
                     itemAvailability = value!;
                   });
