@@ -1,5 +1,8 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -37,13 +40,17 @@ class _CartScreenState extends State<CartScreen> {
     return 'ORD$orderId';
   }
     // Create an Order object
-    Order order = Order(
-      orderId: orderId,
-      items: cartItems,
-      totalPrice: getTotalPrice(),
-      orderTime: DateTime.now(),
-    );
-
+   
+     try {
+    await FirebaseFirestore.instance.collection('orders').add({
+      'totalPrice': getTotalPrice(),
+      'orderId': orderId,
+      'items': cartItems.map((item) => item.toJson()).toList(),
+      'orderTime': DateTime.now(),
+      // Add any other order details you want to store in Firestore
+    });
+    print('Order placed successfully!');
+  
     // Send the order to the backend or perform any necessary actions
     // Here you can make API requests or save the order to a database
     // Replace this with your actual implementation
@@ -54,6 +61,7 @@ class _CartScreenState extends State<CartScreen> {
       builder: (BuildContext context) {
         
         return AlertDialog(
+          // ignore: prefer_const_constructors
           title: Text('Order Placed'),
           content: Text('Your order has been placed successfully.\nOrder ID: $orderId\nTotal Price: \$${getTotalPrice().toStringAsFixed(2)}'),
           actions: [
@@ -68,6 +76,10 @@ class _CartScreenState extends State<CartScreen> {
         );
       },
     );
+    } catch (error) {
+    print('Error placing order: $error');
+  }
+
   }
 
   @override

@@ -33,4 +33,35 @@ class FirestoreMethods {
     }
     return result;
   }
+  Future<List<MenuItem>> getItemList() async {
+  List<MenuItem> itemList = [];
+
+  try {
+    QuerySnapshot querySnapshot =
+        await FirebaseFirestore.instance.collection('items').get();
+
+    querySnapshot.docs.forEach((doc) {
+      final data = doc.data()! as Map<String, dynamic>;
+      // Extract item data from Firestore document
+      String name = data['name'];
+      double price = data['price'];
+      int quantity = data['quantity'];
+      bool availability = data['availability'];
+
+      // Create an Item object and add it to the itemList
+      MenuItem item = MenuItem(
+        name: name,
+        price: price,
+        quantity: quantity,
+        isAvailable: availability,
+      );
+      itemList.add(item);
+    });
+  } catch (error) {
+    print('Error fetching item list: $error');
+  }
+
+  return itemList;
+}
+
 }
