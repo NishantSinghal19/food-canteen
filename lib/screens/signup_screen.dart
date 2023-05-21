@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_canteen/screens/login_screen.dart';
 
 import '../services/auth_methods.dart';
 import '../utils/utils.dart';
@@ -130,7 +131,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       color: Colors.blue,
                       padding: EdgeInsets.symmetric(horizontal: 50),
                       child: TextButton(
-                        onPressed: () => Navigator.pop(context),
+                        onPressed: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginScreen())),
                         child: Text(
                           'Back to Login',
                           style: TextStyle(
