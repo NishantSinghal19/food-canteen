@@ -53,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
    
   // Call the login method and get the user details
-  UserModel? user = await AuthMethods().logInUser(
+  UserModel? user = await AuthMethod().logInUser(
     email: _emailIdController.text,
     password: _passwordController.text,
   );
@@ -190,7 +190,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Padding(
             padding: EdgeInsets.only(top: 25.0, bottom: 15.0),
             child: Text(
-              'Instagram',
+              'Food Masti',
               style: TextStyle(fontFamily: 'Billabong', fontSize: 50.0),
             ),
           ),
@@ -272,7 +272,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 }
-class AuthMethods {
+class AuthMethod {
   Future<UserModel?> logInUser({required String email, required String password}) async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance

@@ -16,7 +16,6 @@ class FirestoreMethods {
   ) async {
     String result = "Some error occurred";
     try {
-      
       String itemId = Uuid().v1();
       MenuItem item = MenuItem(
         name: name,
@@ -33,35 +32,35 @@ class FirestoreMethods {
     }
     return result;
   }
+
   Future<List<MenuItem>> getItemList() async {
-  List<MenuItem> itemList = [];
+    List<MenuItem> itemList = [];
 
-  try {
-    QuerySnapshot querySnapshot =
-        await FirebaseFirestore.instance.collection('items').get();
+    try {
+      QuerySnapshot querySnapshot =
+          await FirebaseFirestore.instance.collection('items').get();
 
-    querySnapshot.docs.forEach((doc) {
-      final data = doc.data()! as Map<String, dynamic>;
-      // Extract item data from Firestore document
-      String name = data['name'];
-      double price = data['price'];
-      int quantity = data['quantity'];
-      bool availability = data['availability'];
+      querySnapshot.docs.forEach((doc) {
+        final data = doc.data()! as Map<String, dynamic>;
+        // Extract item data from Firestore document
+        String name = data['name'];
+        double price = data['price'];
+        int quantity = data['quantity'];
+        bool availability = data['isAvailable'];
 
-      // Create an Item object and add it to the itemList
-      MenuItem item = MenuItem(
-        name: name,
-        price: price,
-        quantity: quantity,
-        isAvailable: availability,
-      );
-      itemList.add(item);
-    });
-  } catch (error) {
-    print('Error fetching item list: $error');
+        // Create an Item object and add it to the itemList
+        MenuItem item = MenuItem(
+          name: name,
+          price: price,
+          quantity: quantity,
+          isAvailable: availability,
+        );
+        itemList.add(item);
+      });
+    } catch (error) {
+      print('Error fetching item list: $error');
+    }
+
+    return itemList;
   }
-
-  return itemList;
-}
-
 }
