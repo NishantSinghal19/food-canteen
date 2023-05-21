@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:food_canteen/screens/login_screen.dart';
 
 import '../models/menu_item.dart';
 import '../models/user_model.dart';
 import 'menu_page.dart';
 import 'cart_screen.dart';
 import 'admin_panel_screen.dart';
+import '../services/auth_methods.dart';
 
 class HomePage extends StatefulWidget {
   final UserModel? user;
@@ -32,13 +34,22 @@ class _HomePageState extends State<HomePage> {
       }
     });
   }
+
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       appBar: AppBar(
         title: Text('Home Page'),
-        
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () async {
+              await AuthMethods().logOutUser();
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => LoginScreen()));
+            },
+          ),
+        ],
       ),
       body: buildBody(),
       bottomNavigationBar: BottomNavigationBar(
@@ -56,14 +67,13 @@ class _HomePageState extends State<HomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.shopping_cart),
             label: 'Cart',
-            
           ),
         ],
       ),
     );
   }
 
-   Widget buildBody() {
+  Widget buildBody() {
     switch (_currentIndex) {
       case 0:
         return MenuPage(user: widget.user!);
