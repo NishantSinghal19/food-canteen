@@ -167,7 +167,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       Container(
                         child: TextButton(
                           onPressed: () =>
-                              Navigator.pushNamed(context, Routes.signup),
+                              Navigator.pushReplacement(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return SignupScreen();
+                              }) ),
                           child: Text('Sign Up.', style: _textStyleGrey),
                         ),
                       ),
@@ -221,15 +224,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 width: MediaQuery.of(context).size.width / 2.7,
                 color: Colors.grey,
                 child: ListTile(),
-              ),
-              Text(
-                ' OR ',
-                style: TextStyle(color: Colors.blueGrey),
-              ),
-              Container(
-                height: 1.0,
-                width: MediaQuery.of(context).size.width / 2.7,
-                color: Colors.grey,
               ),
             ],
           ),

@@ -50,7 +50,8 @@ class _CartScreenState extends State<CartScreen> {
       // Add any other order details you want to store in Firestore
     });
     print('Order placed successfully!');
-  
+     CartProvider cartProvider = Provider.of<CartProvider>(context, listen: false);
+    cartProvider.clearCart();
     // Send the order to the backend or perform any necessary actions
     // Here you can make API requests or save the order to a database
     // Replace this with your actual implementation
@@ -155,6 +156,10 @@ class CartProvider extends ChangeNotifier {
 
   void removeFromCart(CartItem item) {
     _cartItems.remove(item);
+    notifyListeners();
+  }
+  void clearCart() {
+    _cartItems.clear();
     notifyListeners();
   }
 }
