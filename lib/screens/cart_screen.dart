@@ -112,6 +112,10 @@ class _CartScreenState extends State<CartScreen> {
                           IconButton(
                             icon: Icon(Icons.remove),
                             onPressed: () {
+                              if(item.quantity==1) {
+                                cartProvider.removeFromCart(item);
+                                return;
+                              }
                               setState(() {
                                 if (item.quantity > 0) {
                                   item.quantity--;
