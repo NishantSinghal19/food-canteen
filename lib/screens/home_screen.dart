@@ -20,7 +20,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 0;
+  // int _selectedIndex = 0;
   int _currentIndex = 0;
 
   List<MenuItem> cartItems = [];
@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home Page'),
+        title: Text('Food Masti', style: TextStyle(color: Colors.white),),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.logout, color: Colors.white,),

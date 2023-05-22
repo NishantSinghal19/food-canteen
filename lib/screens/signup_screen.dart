@@ -30,7 +30,8 @@ class _SignupScreenState extends State<SignupScreen> {
       if (result != 'success') {
         showSnackBar(result, context);
       } else {
-        Navigator.pushReplacement(context,  MaterialPageRoute(builder: (context)=>LoginScreen()));
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => LoginScreen()));
       }
       setState(() {
         _isLoading = false;
@@ -48,10 +49,9 @@ class _SignupScreenState extends State<SignupScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Text(
-                'Instagram',
+              const Text(
+                'Food Masti',
                 style: TextStyle(
-                  fontFamily: 'Billabong',
                   fontSize: 50.0,
                 ),
               ),
@@ -60,38 +60,72 @@ class _SignupScreenState extends State<SignupScreen> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 30.0,
-                        vertical: 10.0,
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 1.0,
+                        ),
+                      ),
+                      margin: const EdgeInsets.only(
+                        left: 20.0,
+                        right: 20.0,
+                        top: 50.0,
                       ),
                       child: TextFormField(
-                        decoration: InputDecoration(labelText: 'Name'),
+                        decoration: const InputDecoration(
+                            hintText: 'Name',
+                            border: InputBorder.none,
+                            contentPadding:
+                                EdgeInsets.symmetric(horizontal: 10.0)),
                         validator: (input) => input!.trim().isEmpty
                             ? 'Please enter a valid name'
                             : null,
                         onSaved: (input) => _name = input!,
                       ),
-                    ),Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 30.0,
-                        vertical: 10.0,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 1.0,
+                        ),
+                      ),
+                      margin: const EdgeInsets.only(
+                        left: 20.0,
+                        right: 20.0,
+                        top: 10.0,
                       ),
                       child: TextFormField(
-                        decoration: InputDecoration(labelText: 'Email'),
+                        decoration: const InputDecoration(
+                            hintText: 'Email',
+                            border: InputBorder.none,
+                            contentPadding:
+                                EdgeInsets.symmetric(horizontal: 10.0)),
                         validator: (input) => !input!.contains('@')
                             ? 'Please enter a valid email'
                             : null,
                         onSaved: (input) => _email = input!,
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 30.0,
-                        vertical: 10.0,
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 1.0,
+                        ),
+                      ),
+                      margin: const EdgeInsets.only(
+                        left: 20.0,
+                        right: 20.0,
+                        top: 10.0,
                       ),
                       child: TextFormField(
-                        decoration: InputDecoration(labelText: 'Password'),
+                        decoration: const InputDecoration(
+                            hintText: 'Password',
+                            border: InputBorder.none,
+                            contentPadding:
+                                EdgeInsets.symmetric(horizontal: 10.0)),
                         validator: (input) => input!.length < 6
                             ? 'Must be at least 6 characters'
                             : null,
@@ -99,24 +133,27 @@ class _SignupScreenState extends State<SignupScreen> {
                         obscureText: true,
                       ),
                     ),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 10.0),
                     Padding(
-                      padding: EdgeInsets.only(
-                        left: 40,
-                        right: 40,
+                      padding: const EdgeInsets.only(
+                        left: 20,
+                        right: 20,
                       ),
                       child: Container(
                         width: double.infinity,
-                        color: Colors.blue,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: Colors.orangeAccent,
+                        ),
                         child: _isLoading
-                            ? Center(
+                            ? const Center(
                                 child: CircularProgressIndicator(
                                   color: Colors.white,
                                 ),
                               )
                             : TextButton(
                                 onPressed: () => _signUp(),
-                                child: Text(
+                                child: const Text(
                                   'Sign Up',
                                   style: TextStyle(
                                     color: Colors.white,
@@ -126,18 +163,18 @@ class _SignupScreenState extends State<SignupScreen> {
                               ),
                       ),
                     ),
-                    SizedBox(height: 20.0),
-                    Container(
-                      color: Colors.blue,
-                      padding: EdgeInsets.symmetric(horizontal: 50),
-                      child: TextButton(
-                        onPressed: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginScreen())),
-                        child: Text(
-                          'Back to Login',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18.0,
-                          ),
+                    const SizedBox(height: 7.0),
+                    TextButton(
+                      onPressed: () => Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LoginScreen())),
+                      child: const Text(
+                        'Back to Login',
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 209, 136, 41),
+                          fontSize: 16.0,
+                          decoration: TextDecoration.underline,
                         ),
                       ),
                     ),

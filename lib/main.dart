@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:food_canteen/routes.dart';
+// import 'package:food_canteen/routes.dart';
 import 'package:food_canteen/screens/cart_screen.dart';
 import 'package:food_canteen/screens/home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,7 +15,7 @@ void main() async{
 WidgetsFlutterBinding.ensureInitialized();
  SharedPreferences prefs = await SharedPreferences.getInstance();
 bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
-UserModel user=UserModel(email: '', name: '', uid: '');
+UserModel user=UserModel(email: '', name: '', uid: '', role: Userrole.customer);
   if (isLoggedIn) {
     String? userJson = prefs.getString('user');
     Map<String, dynamic> userMap = jsonDecode(userJson!);
@@ -23,6 +23,7 @@ UserModel user=UserModel(email: '', name: '', uid: '');
       name: userMap['name'],
       uid: userMap['uid'],
       email: userMap['email'],
+      role: userMap['role'] == 'Userrole.admin' ? Userrole.admin :Userrole.customer,
       // Set other properties accordingly
     );
   }

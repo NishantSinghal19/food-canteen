@@ -153,12 +153,12 @@ class _MenuPageState extends State<MenuPage> {
               onPressed: () async {
                 // Create a new menu item object
               
-                MenuItem newItem = MenuItem(
-                  name: itemName,
-                  price: itemPrice,
-                  isAvailable: itemAvailability,
-                  quantity: int.parse(itemQuantity),
-                );
+                // MenuItem newItem = MenuItem(
+                //   name: itemName,
+                //   price: itemPrice,
+                //   isAvailable: itemAvailability,
+                //   quantity: int.parse(itemQuantity),
+                // );
 
                 await FirestoreMethods()
           .addnewitem(itemName, itemPrice, itemAvailability,int.parse(itemQuantity));
