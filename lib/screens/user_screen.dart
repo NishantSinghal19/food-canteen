@@ -75,19 +75,61 @@ class _UserScreenState extends State<UserScreen> {
     );
   }
 }
-Future<List<OrderItem>> fetchOrders(uId) async {
+// Future<List<OrderItem>> fetchOrders(uId) async {
+//     List<OrderItem> orders = [];
+
+//     try {
+//       QuerySnapshot querySnapshot =
+//           await FirebaseFirestore.instance.collection('orders').where('userId',isEqualTo: uId).get();
+
+//       querySnapshot.docs.forEach((doc) {
+//         if (doc.data() != null) {
+//           // Cast the data to a Map<String, dynamic>
+//           final data = doc.data()! as Map<String, dynamic>;
+//           String orderId = data['orderId'] ?? doc.id;
+//           double totalPrice = data['totalPrice'] ?? 0.0;
+//           List<CartItem> items = [];
+          
+//           data['items'].forEach((item) {
+//             items.add(CartItem(
+//               name: item['name'],
+//               price: item['price'],
+//               quantity: item['quantity'],
+//             ));
+//           });
+
+//           DateTime orderTime = data['orderTime'].toDate();
+//           // Create an Order object and add it to the orders list
+//           OrderItem order = OrderItem(
+//               orderId: orderId,
+//               totalPrice: totalPrice,
+//               userId: uId,
+//               items: items,
+//               orderTime: orderTime);
+//           orders.add(order);
+//         }
+//       });
+//     } catch (error) {
+//       Text('Error fetching orders: $error');
+//       print('Error fetching orders: $error');
+//     }
+
+//     return orders;
+//   }
+  Future<List<OrderItem>> fetchOrders(userId) async {
     List<OrderItem> orders = [];
 
     try {
       QuerySnapshot querySnapshot =
-          await FirebaseFirestore.instance.collection('orders').where('userId',isEqualTo: uId).get();
+          await FirebaseFirestore.instance.collection('orders').where('userId',isEqualTo: userId).get();
 
-      querySnapshot.docs.forEach((doc) {
+      for (var doc in querySnapshot.docs) {
         if (doc.data() != null) {
           // Cast the data to a Map<String, dynamic>
           final data = doc.data()! as Map<String, dynamic>;
           String orderId = data['orderId'] ?? doc.id;
           double totalPrice = data['totalPrice'] ?? 0.0;
+          String status = data['status'] ?? 'Pending';
           List<CartItem> items = [];
           
           data['items'].forEach((item) {
@@ -103,15 +145,15 @@ Future<List<OrderItem>> fetchOrders(uId) async {
           OrderItem order = OrderItem(
               orderId: orderId,
               totalPrice: totalPrice,
-              userId: uId,
+              userId: userId,
               items: items,
-              orderTime: orderTime);
+              orderTime: orderTime,
+              status: status);
           orders.add(order);
         }
-      });
+      }
     } catch (error) {
       Text('Error fetching orders: $error');
-      print('Error fetching orders: $error');
     }
 
     return orders;
