@@ -52,7 +52,7 @@ class _CartScreenState extends State<CartScreen> {
       print('Order placed successfully!');
       CartProvider cartProvider =
           Provider.of<CartProvider>(context, listen: false);
-      cartProvider.saveCartItems();
+      //cartProvider.saveCartItems();
       // Send the order to the backend or perform any necessary actions
       // Here you can make API requests or save the order to a database
       // Replace this with your actual implementation
@@ -72,7 +72,7 @@ class _CartScreenState extends State<CartScreen> {
                 onPressed: () {
                   // Clear the cart and navigate back
                   cartProvider.clearCart();
-                  cartProvider.saveCartItems();
+                  //cartProvider.saveCartItems();
                   Navigator.pop(context);
                 },
               ),
@@ -89,7 +89,7 @@ class _CartScreenState extends State<CartScreen> {
   void initState() {
     super.initState();
     // Load the cart items when the page is initialized
-    Provider.of<CartProvider>(context, listen: false).loadCartItems();
+    //Provider.of<CartProvider>(context, listen: false).loadCartItems();
   }
 
   @override
@@ -185,14 +185,14 @@ class CartProvider extends ChangeNotifier {
       _cartItems[ind].quantity++;
     } else {
       _cartItems.add(item);
-      saveCartItems();
+      //saveCartItems();
     }
     notifyListeners();
   }
 
   void removeFromCart(CartItem item) {
     _cartItems.remove(item);
-    saveCartItems();
+    //saveCartItems();
     notifyListeners();
   }
 
@@ -201,20 +201,20 @@ class CartProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> saveCartItems() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> cartItemsJson =
-        _cartItems.map((item) => json.encode(item.toJson())).toList();
-    await prefs.setStringList('cartItems', cartItemsJson);
-  }
+  // Future<void> saveCartItems() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   List<String> cartItemsJson =
+  //       _cartItems.map((item) => json.encode(item.toJson())).toList();
+  //   await prefs.setStringList('cartItems', cartItemsJson);
+  // }
 
-  Future<void> loadCartItems() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String>? cartItemsJson = prefs.getStringList('cartItems');
-    if (cartItemsJson != null && cartItemsJson.isNotEmpty) {
-      _cartItems = cartItemsJson
-          .map((json) => CartItem.fromSnap(jsonDecode(json))!)
-          .toList() as List<CartItem>;
-    }
-  }
+  // Future<void> loadCartItems() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   List<String>? cartItemsJson = prefs.getStringList('cartItems');
+  //   if (cartItemsJson != null && cartItemsJson.isNotEmpty) {
+  //     _cartItems = cartItemsJson
+  //         .map((json) => CartItem.fromSnap(jsonDecode(json))!)
+  //         .toList() as List<CartItem>;
+  //   }
+  // }
 }

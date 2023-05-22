@@ -74,8 +74,11 @@ class _HomePageState extends State<HomePage> {
           if (widget.user!.role == Userrole.admin)
             BottomNavigationBarItem(
               icon: Icon(Icons.admin_panel_settings),
-              label: 'Admin Panel',            
-          ),
+              label: 'Admin Panel',),
+          if(widget.user!.role == Userrole.customer)
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'User',),
         ],
       ),
     );
