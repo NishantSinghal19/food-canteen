@@ -72,7 +72,8 @@ class _AdminPageState extends State<AdminPage> {
                     children: [
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          shape: CircleBorder(eccentricity: 0.5)
+                          shape: CircleBorder(eccentricity: 0.5),
+                          shadowColor: Color.fromARGB(105, 253, 227, 202),
                         ),
                         onPressed: () {
                           // Handle the accept button action
