@@ -49,6 +49,7 @@ class _CartScreenState extends State<CartScreen> {
         'items': cartItems.map((item) => item.toJson()).toList(),
         'orderTime': DateTime.now(),
         'userId': FirebaseAuth.instance.currentUser!.uid,
+        'status': 'Pending',
         // Add any other order details you want to store in Firestore
       });
       print('Order placed successfully!');

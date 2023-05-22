@@ -94,10 +94,11 @@ class _AdminPageState extends State<AdminPage> {
                           shape: const CircleBorder(eccentricity: 0.5),
                           shadowColor: const Color.fromARGB(105, 253, 227, 202),
                         ),
-                        onPressed: () {
+                        onPressed: () async {
                           // Handle the accept button action
-                          bool ans = _updateOrderStatus(index, 'Accepted');
-                          if(ans) orderItems[index].status = 'Accepted';
+                          var oid = orderItems[index].orderId;
+                          Future<bool> ans = _updateOrderStatus(oid, 'Ready');
+                          if(await ans) orderItems[index].status = 'Accepted';
                         },
                         child: const Icon(Icons.check, color: Color.fromARGB(255, 47, 255, 54),),
                       ),
@@ -106,13 +107,14 @@ class _AdminPageState extends State<AdminPage> {
                         style: ElevatedButton.styleFrom(
                           shape: const CircleBorder(eccentricity: 0.5)
                         ),
-                        onPressed: () {
+                        onPressed: () async {
                           setState(() {
-                              orderItems[index].status = 'Declined';
+                              orderItems[index].status = 'Finished';
                            });  
                           // Handle the decline button action
-                          bool ans = _updateOrderStatus(index, 'Ready');
-                          if(ans) orderItems[index].status = 'Ready';
+                          var oid = orderItems[index].orderId;
+                          Future<bool> ans = _updateOrderStatus(oid, 'Ready');
+                          if(await ans) orderItems[index].status = 'Ready';
                         },
                         child: const Text('Ready', style: TextStyle(color: Color.fromARGB(255, 255, 255, 255))),
                       ),
@@ -121,10 +123,11 @@ class _AdminPageState extends State<AdminPage> {
                         style: ElevatedButton.styleFrom(
                           shape: const CircleBorder(eccentricity: 0.5)
                         ),
-                        onPressed: () {
-                          // Handle the decline button action
-                          bool ans = _updateOrderStatus(index, 'Declined');
-                          if(ans) orderItems[index].status = 'Declined';
+                        onPressed: () async {
+                          // Handle the decline button 
+                          var oid = orderItems[index].orderId;
+                          Future<bool> ans = _updateOrderStatus(oid, 'Declined');
+                          if(await ans) orderItems[index].status = 'Declined';
                         },
                         child: const Icon(Icons.close, color: Color.fromARGB(255, 255, 17, 0),),
                       ),
@@ -153,6 +156,7 @@ class _AdminPageState extends State<AdminPage> {
           String orderId = data['orderId'] ?? doc.id;
           double totalPrice = data['totalPrice'] ?? 0.0;
           List<CartItem> items = [];
+          String status = data['status'] ?? 'Pending';
           
           data['items'].forEach((item) {
             items.add(CartItem(
@@ -169,7 +173,8 @@ class _AdminPageState extends State<AdminPage> {
               totalPrice: totalPrice,
               userId: userId,
               items: items,
-              orderTime: orderTime);
+              orderTime: orderTime,
+              status: status);
           orders.add(order);
         }
       }
@@ -181,10 +186,25 @@ class _AdminPageState extends State<AdminPage> {
   }
 
   // Handle the accept button action
-  bool _updateOrderStatus(num ind, String status) {
+  // bool (num ind, String status) {
           
-    print('Order $ind $status');
+  //   print('Order $ind $status');
+  //   return true;
+  // }
+  Future<bool> _updateOrderStatus(String orderId,String status) async {
+  try {
+    await FirebaseFirestore.instance
+        .collection('orders')
+        .doc(orderId)
+        .update({'status': status}); // Replace 'status' with the field name in your Firestore documents
+
+    print('Order $orderId $status');
     return true;
+  } catch (error) {
+    // Handle any errors that occur during the update process
+    print('Error accepting order: $error');
+    return false;
   }
+}
 
 }
