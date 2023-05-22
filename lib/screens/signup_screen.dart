@@ -74,7 +74,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                       child: TextFormField(
                         decoration: const InputDecoration(
-                            labelText: 'Name',
+                            hintText: 'Name',
                             border: InputBorder.none,
                             contentPadding:
                                 EdgeInsets.symmetric(horizontal: 10.0)),
@@ -98,7 +98,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                       child: TextFormField(
                         decoration: const InputDecoration(
-                            labelText: 'Email',
+                            hintText: 'Email',
                             border: InputBorder.none,
                             contentPadding:
                                 EdgeInsets.symmetric(horizontal: 10.0)),
@@ -122,7 +122,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                       child: TextFormField(
                         decoration: const InputDecoration(
-                            labelText: 'Password',
+                            hintText: 'Password',
                             border: InputBorder.none,
                             contentPadding:
                                 EdgeInsets.symmetric(horizontal: 10.0)),
