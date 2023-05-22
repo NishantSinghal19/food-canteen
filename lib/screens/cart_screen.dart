@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -47,6 +48,8 @@ class _CartScreenState extends State<CartScreen> {
         'orderId': orderId,
         'items': cartItems.map((item) => item.toJson()).toList(),
         'orderTime': DateTime.now(),
+        'userId': FirebaseAuth.instance.currentUser!.uid,
+        'status': 'Pending',
         // Add any other order details you want to store in Firestore
       });
       print('Order placed successfully!');
