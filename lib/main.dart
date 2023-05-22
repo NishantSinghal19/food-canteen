@@ -7,7 +7,7 @@ import 'package:food_canteen/screens/cart_screen.dart';
 import 'package:food_canteen/screens/home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
-
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'models/user_model.dart';
 import 'screens/login_screen.dart';
 
@@ -29,6 +29,8 @@ UserModel user=UserModel(email: '', name: '', uid: '', role: Userrole.customer);
   }
 
 await Firebase.initializeApp();
+// final fcmToken = await FirebaseMessaging.instance.getToken();
+// print(fcmToken);
 runApp( 
   ChangeNotifierProvider(
       create: (_) => CartProvider(),child:MyApp(isLoggedIn: isLoggedIn ,user: user)));
@@ -44,8 +46,33 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  
-  
+// final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+// @override
+// void initState() {
+//   super.initState();
+//   _firebaseMessaging.getToken().then((token) => print(token));
+//   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+//   print("onMessage: $message");
+//   showDialog(
+//     context: context,
+//     builder: (context) => AlertDialog(
+//       content: ListTile(
+//         title: Text(message.notification!.title ?? ''),
+//         subtitle: Text(message.notification!.body ?? ''),
+//       ),
+//       actions: <Widget>[
+//         TextButton(
+//           child: const Text('Ok'),
+//           onPressed: () => Navigator.of(context).pop(),
+//         ),
+//       ],
+//     ),
+//   );
+// });
+// _firebaseMessaging.getNotificationSettings().then((settings) {
+//   print('User granted permission: ${settings.authorizationStatus}');
+// });
+// }
 
 @override
 Widget build(BuildContext context) {
