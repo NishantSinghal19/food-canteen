@@ -273,21 +273,16 @@ class AuthMethod {
   Future<UserModel?> logInUser(
       {required String email, required String password}) async {
     try {
-      UserCredential userCredential = await FirebaseAuth.instance
+      var userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
       User? user = userCredential.user;
+      
 
       // Fetch additional user details from the database
       // Query Firestore or any other database to retrieve user details based on user.uid or user.email
 
       // Create a UserModel object with the retrieved user data
-      UserModel userModel = UserModel(
-        name: user!.displayName ?? 'No name',
-        uid: user.uid,
-
-        email: user.email ?? 'No email',
-        // Add other relevant user details from the database
-      );
+      UserModel userModel = (await AuthMethods().getUserDetails())!;
 
       return userModel;
     } catch (error) {
