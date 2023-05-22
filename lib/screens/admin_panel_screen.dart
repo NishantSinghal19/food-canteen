@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_import
+// ignore_for_file: unnecessary_import, unnecessary_brace_in_string_interps
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +24,7 @@ class _AdminPageState extends State<AdminPage> {
     // Check if the user is an admin
     if (currentUser.role.toString() != 'Userrole.admin') {
       // Redirect to another page or show an error message
-      return Scaffold(
+      return const Scaffold(
         body: Center(
           child: Text('You do not have permission to access this page.'),
         ),
@@ -35,12 +35,12 @@ class _AdminPageState extends State<AdminPage> {
     final orders = fetchOrders();
 
     return Scaffold(
-      backgroundColor: Color.fromARGB(105, 253, 227, 202),
+      backgroundColor: const Color.fromARGB(105, 253, 227, 202),
       body: FutureBuilder<List<OrderItem>>(
         future: orders,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
@@ -51,17 +51,17 @@ class _AdminPageState extends State<AdminPage> {
                 final order = orderItems[index];
                 String orderItemStr = "";
 
-                order.items.forEach((item) {
+                for (var item in order.items) {
                   orderItemStr += '${item.name} (${item.quantity})\n';
-                });
+                }
 
                 return Container(
                   decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.0), // Border radius value
-                color: Color.fromARGB(255, 254, 250, 246) // Background color of the container
+                color: const Color.fromARGB(255, 254, 250, 246) // Background color of the container
                 
               ),
-              margin: EdgeInsets.fromLTRB(5,5,5,5),
+              margin: const EdgeInsets.fromLTRB(5,5,5,5),
                   child: ListTile(
                   title: Text('Order:\n${orderItemStr}'),
                   subtitle: Text(
@@ -69,29 +69,41 @@ class _AdminPageState extends State<AdminPage> {
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      ElevatedButton(
+                      if(orderItems[index].status != 'Accepted') ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          shape: CircleBorder(eccentricity: 0.5),
-                          shadowColor: Color.fromARGB(105, 253, 227, 202),
+                          shape: const CircleBorder(eccentricity: 0.5),
+                          shadowColor: const Color.fromARGB(105, 253, 227, 202),
                         ),
                         onPressed: () {
                           // Handle the accept button action
-                          orderItems[index].status = 'Accepted';
-                          _acceptOrder(index);
+                          bool ans = _acceptOrder(index);
+                          if(ans) orderItems[index].status = 'Accepted';
                         },
-                        child: Icon(Icons.check, color: Color.fromARGB(255, 47, 255, 54),),
+                        child: const Icon(Icons.check, color: Color.fromARGB(255, 47, 255, 54),),
                       ),
-                      SizedBox(width: 10),
-                      ElevatedButton(
+                      const SizedBox(width: 10),
+                      if(orderItems[index].status == 'Accepted') ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          shape: CircleBorder(eccentricity: 0.5)
+                          shape: const CircleBorder(eccentricity: 0.5)
                         ),
                         onPressed: () {
                           // Handle the decline button action
-                          orderItems[index].status = 'Declined';
-                          _declineOrder(index);
+                          bool ans = _readyOrder(index);
+                          if(ans) orderItems[index].status = 'Ready';
                         },
-                        child: Icon(Icons.close, color: Color.fromARGB(255, 255, 17, 0),),
+                        child: const Text('Ready', style: TextStyle(color: Color.fromARGB(255, 255, 255, 255))),
+                      ),
+                      const SizedBox(width: 10),
+                      if(orderItems[index].status != 'Declined') ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: const CircleBorder(eccentricity: 0.5)
+                        ),
+                        onPressed: () {
+                          // Handle the decline button action
+                          bool ans = _declineOrder(index);
+                          if(ans) orderItems[index].status = 'Declined';
+                        },
+                        child: const Icon(Icons.close, color: Color.fromARGB(255, 255, 17, 0),),
                       ),
                     ],
                   ),
@@ -111,7 +123,7 @@ class _AdminPageState extends State<AdminPage> {
       QuerySnapshot querySnapshot =
           await FirebaseFirestore.instance.collection('orders').get();
 
-      querySnapshot.docs.forEach((doc) {
+      for (var doc in querySnapshot.docs) {
         if (doc.data() != null) {
           // Cast the data to a Map<String, dynamic>
           final data = doc.data()! as Map<String, dynamic>;
@@ -136,25 +148,33 @@ class _AdminPageState extends State<AdminPage> {
               orderTime: orderTime);
           orders.add(order);
         }
-      });
+      }
     } catch (error) {
       Text('Error fetching orders: $error');
-      print('Error fetching orders: $error');
     }
 
     return orders;
   }
 
   // Handle the accept button action
-  void _acceptOrder(num ind) {
+  bool _acceptOrder(num ind) {
     // Replace this with your actual implementation
     
     print('Order $ind accepted');
+    return true;
   }
 
   // Handle the decline button action
-  void _declineOrder(num ind) {
+  bool _declineOrder(num ind) {
     // Replace this with your actual implementation
     print('Order $ind declined');
+    return true;
+  }
+
+  // Handle the ready button action
+  bool _readyOrder(num ind) {
+    // Replace this with your actual implementation
+    print('Order $ind ready');
+    return true;
   }
 }
