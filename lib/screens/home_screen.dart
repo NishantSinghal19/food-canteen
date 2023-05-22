@@ -78,7 +78,7 @@ class _HomePageState extends State<HomePage> {
           if(widget.user!.role == Userrole.customer)
             BottomNavigationBarItem(
               icon: Icon(Icons.person),
-              label: 'User',),
+              label: 'Orders',),
         ],
       ),
     );
