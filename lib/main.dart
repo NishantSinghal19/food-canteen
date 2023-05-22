@@ -33,11 +33,18 @@ runApp(
       create: (_) => CartProvider(),child:MyApp(isLoggedIn: isLoggedIn ,user: user)));
 }
  
-
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   final bool isLoggedIn;
     final UserModel user;
   MyApp({required this.isLoggedIn, required  this.user}) ;
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  
+  
 
 @override
 Widget build(BuildContext context) {
@@ -64,7 +71,7 @@ Widget build(BuildContext context) {
         bodyText1: const TextStyle(fontSize: 18.0),
       ),
     ),
-     home: isLoggedIn ? HomePage(user: user) : LoginScreen(),
+     home: widget.isLoggedIn ? HomePage(user: widget.user) : LoginScreen(),
   );
 }
 }

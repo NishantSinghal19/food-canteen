@@ -1,10 +1,12 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 import '../models/cart_item.dart';
@@ -51,6 +53,7 @@ class _CartScreenState extends State<CartScreen> {
       CartProvider cartProvider =
           Provider.of<CartProvider>(context, listen: false);
       cartProvider.clearCart();
+      cartProvider.saveCartItems();
       // Send the order to the backend or perform any necessary actions
       // Here you can make API requests or save the order to a database
       // Replace this with your actual implementation
@@ -79,6 +82,13 @@ class _CartScreenState extends State<CartScreen> {
     } catch (error) {
       print('Error placing order: $error');
     }
+  }
+
+  @override
+   void initState() {
+    super.initState();
+    // Load the cart items when the page is initialized
+    Provider.of<CartProvider>(context, listen: false).loadCartItems();
   }
 
   @override
@@ -174,17 +184,32 @@ class CartProvider extends ChangeNotifier {
       _cartItems[ind].quantity++;
     } else {
       _cartItems.add(item);
+      saveCartItems();
     }
     notifyListeners();
   }
 
   void removeFromCart(CartItem item) {
     _cartItems.remove(item);
+    saveCartItems();
     notifyListeners();
   }
 
   void clearCart() {
     _cartItems.clear();
     notifyListeners();
+  }
+   Future<void> saveCartItems() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> cartItemsJson = _cartItems.map((item) => json.encode(item.toJson())).toList();
+    await prefs.setStringList('cartItems', cartItemsJson);
+  }
+
+  Future<void> loadCartItems() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String>? cartItemsJson = prefs.getStringList('cartItems');
+    if (cartItemsJson != null) {
+      _cartItems = cartItemsJson.map((json) => CartItem.fromSnap(jsonDecode(json))).toList() as List<CartItem>;
+    }
   }
 }

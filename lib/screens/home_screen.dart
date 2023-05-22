@@ -69,7 +69,7 @@ class _HomePageState extends State<HomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.shopping_cart),
             label: 'Cart',),
-          if (widget.user!.role != Userrole.admin)
+          if (widget.user!.role == Userrole.admin)
             BottomNavigationBarItem(
               icon: Icon(Icons.admin_panel_settings),
               label: 'Admin Panel',            
@@ -87,7 +87,7 @@ class _HomePageState extends State<HomePage> {
         return CartScreen();
         
       case 2:
-        if (widget.user!.role  != Userrole.admin) {
+        if (widget.user!.role  == Userrole.admin) {
           return AdminPage(user: widget.user!);
         } else {
           return Container();

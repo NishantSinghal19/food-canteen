@@ -23,7 +23,7 @@ class _AdminPageState extends State<AdminPage> {
     final currentUser = widget.user;
 
     // Check if the user is an admin
-    if (currentUser.role == 'admin') {
+    if (currentUser.role != 'admin') {
       // Redirect to another page or show an error message
       return Scaffold(
         body: Center(

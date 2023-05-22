@@ -25,7 +25,7 @@ class _MenuPageState extends State<MenuPage> {
   @override
   Widget build(BuildContext context) {
      final cartProvider = Provider.of<CartProvider>(context, listen: false);
-    bool isAdmin = widget.user.role == Userrole.customer;
+    bool isAdmin = widget.user.role == Userrole.admin;
 
     return Scaffold(
       backgroundColor: Color.fromARGB(105, 253, 227, 202),

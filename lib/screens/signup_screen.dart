@@ -30,7 +30,7 @@ class _SignupScreenState extends State<SignupScreen> {
       if (result != 'success') {
         showSnackBar(result, context);
       } else {
-        Navigator.pop(context);
+        Navigator.pushReplacement(context,  MaterialPageRoute(builder: (context)=>LoginScreen()));
       }
       setState(() {
         _isLoading = false;
