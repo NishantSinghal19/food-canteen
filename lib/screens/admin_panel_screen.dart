@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:food_canteen/models/cart_item.dart';
 import 'package:food_canteen/models/order.dart';
 import 'package:food_canteen/models/user_model.dart';
-import 'package:provider/provider.dart';
 
 class AdminPage extends StatefulWidget {
   final UserModel user;
@@ -23,7 +22,7 @@ class _AdminPageState extends State<AdminPage> {
     final currentUser = widget.user;
 
     // Check if the user is an admin
-    if (currentUser.role != 'admin') {
+    if (currentUser.role.toString() != 'Userrole.admin') {
       // Redirect to another page or show an error message
       return Scaffold(
         body: Center(

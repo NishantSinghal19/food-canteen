@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'models/user_model.dart';
+// import 'models/user_model.dart';
 import 'screens/login_screen.dart';
 import 'screens/signup_screen.dart';
-import 'screens/home_screen.dart';
+// import 'screens/home_screen.dart';
 
 class Routes {
   static const String login = '/login';
@@ -22,7 +22,7 @@ class Routes {
       //   builder: (_) => HomePage(user: user),
       // );
       default:
-        return MaterialPageRoute(builder: (_) => Scaffold(
+        return MaterialPageRoute(builder: (_) => const Scaffold(
           body: Center(
             child: Text('Error: Route not found!'),
           ),

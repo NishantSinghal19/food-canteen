@@ -10,8 +10,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 import '../models/cart_item.dart';
-import '../models/menu_item.dart';
-import '../models/order.dart';
+// import '../models/menu_item.dart';
+// import '../models/order.dart';
 
 class CartScreen extends StatefulWidget {
   @override
@@ -52,7 +52,6 @@ class _CartScreenState extends State<CartScreen> {
       print('Order placed successfully!');
       CartProvider cartProvider =
           Provider.of<CartProvider>(context, listen: false);
-      cartProvider.clearCart();
       cartProvider.saveCartItems();
       // Send the order to the backend or perform any necessary actions
       // Here you can make API requests or save the order to a database
@@ -66,12 +65,14 @@ class _CartScreenState extends State<CartScreen> {
             // ignore: prefer_const_constructors
             title: Text('Order Placed'),
             content: Text(
-                'Your order has been placed successfully.\nOrder ID: $orderId\nTotal Price: \$${getTotalPrice().toStringAsFixed(2)}'),
+                'Your order has been placed successfully.\nOrder ID: $orderId\nTotal Price: ${'\u20B9'}${getTotalPrice().toStringAsFixed(2)}'),
             actions: [
               TextButton(
-                child: Text('OK'),
+                child: const Text('OK'),
                 onPressed: () {
                   // Clear the cart and navigate back
+                  cartProvider.clearCart();
+                  cartProvider.saveCartItems();
                   Navigator.pop(context);
                 },
               ),
@@ -85,7 +86,7 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   @override
-   void initState() {
+  void initState() {
     super.initState();
     // Load the cart items when the page is initialized
     Provider.of<CartProvider>(context, listen: false).loadCartItems();
@@ -96,7 +97,7 @@ class _CartScreenState extends State<CartScreen> {
     final cartProvider = Provider.of<CartProvider>(context);
     cartItems = cartProvider.cartItems;
     return Scaffold(
-      backgroundColor: Color.fromARGB(105, 253, 227, 202),
+      backgroundColor: const Color.fromARGB(105, 253, 227, 202),
       body: Column(
         children: [
           Expanded(
@@ -108,11 +109,11 @@ class _CartScreenState extends State<CartScreen> {
                     decoration: BoxDecoration(
                         borderRadius:
                             BorderRadius.circular(10.0), // Border radius value
-                        color: Color.fromARGB(255, 254, 250,
+                        color: const Color.fromARGB(255, 254, 250,
                             246) // Background color of the container
 
                         ),
-                    margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                    margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
                     child: ListTile(
                       title: Text(item.name),
                       subtitle: Text('\$${item.price.toStringAsFixed(2)}'),
@@ -122,7 +123,7 @@ class _CartScreenState extends State<CartScreen> {
                           IconButton(
                             icon: Icon(Icons.remove),
                             onPressed: () {
-                              if(item.quantity==1) {
+                              if (item.quantity == 1) {
                                 cartProvider.removeFromCart(item);
                                 return;
                               }
@@ -153,8 +154,8 @@ class _CartScreenState extends State<CartScreen> {
           Padding(
             padding: const EdgeInsets.only(bottom: 10.0, top: 10.0),
             child: Text(
-              'Total Price: \$${getTotalPrice().toStringAsFixed(2)}',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              'Total Price: ${'\u20B9'}${getTotalPrice().toStringAsFixed(2)}',
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
           ElevatedButton(
@@ -163,10 +164,10 @@ class _CartScreenState extends State<CartScreen> {
                 borderRadius: BorderRadius.circular(20.0),
               ),
             ),
-            child: Text('Place Order'),
             onPressed: cartItems.isEmpty ? null : placeOrder,
+            child: const Text('Place Order'),
           ),
-          Padding(padding: EdgeInsets.only(bottom: 20))
+          const Padding(padding: EdgeInsets.only(bottom: 20))
         ],
       ),
     );
@@ -199,17 +200,21 @@ class CartProvider extends ChangeNotifier {
     _cartItems.clear();
     notifyListeners();
   }
-   Future<void> saveCartItems() async {
+
+  Future<void> saveCartItems() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> cartItemsJson = _cartItems.map((item) => json.encode(item.toJson())).toList();
+    List<String> cartItemsJson =
+        _cartItems.map((item) => json.encode(item.toJson())).toList();
     await prefs.setStringList('cartItems', cartItemsJson);
   }
 
   Future<void> loadCartItems() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String>? cartItemsJson = prefs.getStringList('cartItems');
-    if (cartItemsJson != null) {
-      _cartItems = cartItemsJson.map((json) => CartItem.fromSnap(jsonDecode(json))).toList() as List<CartItem>;
+    if (cartItemsJson != null && cartItemsJson.isNotEmpty) {
+      _cartItems = cartItemsJson
+          .map((json) => CartItem.fromSnap(jsonDecode(json))!)
+          .toList() as List<CartItem>;
     }
   }
 }

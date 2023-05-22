@@ -27,7 +27,6 @@ class _SignupScreenState extends State<SignupScreen> {
       // Logging in the user w/ Firebase
       String result = await AuthMethods()
           .signUpUser(name: _name, email: _email, password: _password);
-      print({"%%%%%%%%%%%%%%%%%%", result});
       if (result != 'success') {
         showSnackBar(result, context);
       } else {
