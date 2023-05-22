@@ -60,17 +60,17 @@ class _AdminPageState extends State<AdminPage> {
                       ElevatedButton(
                         onPressed: () {
                           // Handle the accept button action
-                          _acceptOrder(order.orderId);
+                          _acceptOrder(index);
                         },
-                        child: Text('Accept'),
+                        child: Icon(Icons.check),
                       ),
                       SizedBox(width: 10),
                       ElevatedButton(
                         onPressed: () {
                           // Handle the decline button action
-                          _declineOrder(order.orderId);
+                          _declineOrder(index);
                         },
-                        child: Text('Decline'),
+                        child: Icon(Icons.close),
                       ),
                     ],
                   ),
@@ -125,14 +125,15 @@ class _AdminPageState extends State<AdminPage> {
   }
 
   // Handle the accept button action
-  void _acceptOrder(String orderId) {
+  void _acceptOrder(num ind) {
     // Replace this with your actual implementation
-    print('Order $orderId accepted');
+    
+    print('Order $ind accepted');
   }
 
   // Handle the decline button action
-  void _declineOrder(String orderId) {
+  void _declineOrder(num ind) {
     // Replace this with your actual implementation
-    print('Order $orderId declined');
+    print('Order $ind declined');
   }
 }
