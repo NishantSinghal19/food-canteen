@@ -20,18 +20,18 @@ class LoginScreen extends StatefulWidget {
   // static const String id = 'login_screen';
 
   @override
-  _LoginScreenState createState() => new _LoginScreenState();
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController _emailIdController = new TextEditingController();
-  final TextEditingController _passwordController = new TextEditingController();
+  final TextEditingController _emailIdController =  TextEditingController();
+  final TextEditingController _passwordController =  TextEditingController();
   bool _isLoading = false;
 
-  var _textStyleBlack = new TextStyle(fontSize: 12.0, color: Colors.black);
-  var _textStyleGrey = new TextStyle(fontSize: 12.0, color: Colors.grey);
+  var _textStyleBlack =  TextStyle(fontSize: 12.0, color: Colors.black);
+  var _textStyleGrey =  TextStyle(fontSize: 12.0, color: Colors.grey);
   var _textStyleBlueGrey =
-      new TextStyle(fontSize: 12.0, color: Colors.blueGrey);
+       TextStyle(fontSize: 12.0, color: Colors.blueGrey);
 
   @override
   void dispose() {
@@ -40,62 +40,63 @@ class _LoginScreenState extends State<LoginScreen> {
     _passwordController.dispose();
   }
 
-
   Future<bool> _logInUser() async {
-  if (_emailIdController.text.isEmpty || _passwordController.text.isEmpty) {
-    _showEmptyDialog("Please enter email and password");
-    return false;
-  }
+    if (_emailIdController.text.isEmpty || _passwordController.text.isEmpty) {
+      _showEmptyDialog("Please enter email and password");
+      return false;
+    }
 
-  setState(() {
-    _isLoading = true;
-  });
+    setState(() {
+      _isLoading = true;
+    });
 
-   
-  // Call the login method and get the user details
-  UserModel? user = await AuthMethod().logInUser(
-    email: _emailIdController.text,
-    password: _passwordController.text,
-  );
-
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  await prefs.setBool('isLoggedIn', true);
-  await prefs.setString('user', jsonEncode(user?.toJson()));
-  if (user != null) {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (_) => HomePage(user: user),
-      ),
+    // Call the login method and get the user details
+    UserModel? user = await AuthMethod().logInUser(
+      email: _emailIdController.text,
+      password: _passwordController.text,
     );
-  } else {
-    showSnackBar("Invalid email or password", context);
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isLoggedIn', true);
+    await prefs.setString('user', jsonEncode(user?.toJson()));
+    if (user != null) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => HomePage(user: user),
+        ),
+      );
+    } else {
+      showSnackBar("Invalid email or password", context);
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
+    return true;
   }
-
-  setState(() {
-    _isLoading = false;
-  });
-  return true;
-}
-
-
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return  Scaffold(
       bottomNavigationBar: _bottomBar(),
       body: _body(),
     );
   }
 
   Widget _userIDEditContainer() {
-    return new Container(
-      child: new TextField(
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      child:  TextField(
         controller: _emailIdController,
-        decoration: new InputDecoration(
-            hintText: 'Phone number, email or username',
-            border: new OutlineInputBorder(
-              borderSide: new BorderSide(color: Colors.black),
+        decoration:  InputDecoration(
+            hintText: 'Email',
+            border:  OutlineInputBorder(
+              borderSide:  BorderSide(color: Colors.black),
+              borderRadius: BorderRadius.circular(10.0),
+
             ),
             isDense: true),
         style: _textStyleBlack,
@@ -113,6 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
             hintText: 'Password',
             border: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.black),
+              borderRadius: BorderRadius.circular(10.0),
             ),
             isDense: true),
         style: _textStyleBlack,
@@ -125,6 +127,10 @@ class _LoginScreenState extends State<LoginScreen> {
       onTap: _logInUser,
       child: Container(
         alignment: Alignment.center,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.0),
+          color: Colors.orangeAccent,
+        ),
         margin: EdgeInsets.only(top: 10.0),
         width: 500.0,
         height: 40.0,
@@ -138,12 +144,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 "Log In",
                 style: TextStyle(color: Colors.white),
               ),
-        color: Colors.blue,
       ),
     );
   }
-
-
 
   Widget _bottomBar() {
     return Container(
@@ -166,12 +169,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       Text('Don\'t have an account?', style: _textStyleGrey),
                       Container(
                         child: TextButton(
-                          onPressed: () =>
-                              Navigator.pushReplacement(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return SignupScreen();
-                              }) ),
-                          child: Text('Sign Up.', style: _textStyleGrey),
+                          onPressed: () => Navigator.pushReplacement(context,
+                              MaterialPageRoute(builder: (context) {
+                            return SignupScreen();
+                          })),
+                          child: Text('Sign Up.', style: TextStyle(color: Color.fromARGB(255, 225, 136, 2), fontSize: 12.0)),
                         ),
                       ),
                     ],
@@ -194,39 +196,39 @@ class _LoginScreenState extends State<LoginScreen> {
             padding: EdgeInsets.only(top: 25.0, bottom: 15.0),
             child: Text(
               'Food Masti',
-              style: TextStyle(fontFamily: 'Billabong', fontSize: 50.0),
+              style: TextStyle(fontSize: 50.0),
             ),
           ),
           _userIDEditContainer(),
           _passwordEditContainer(),
           _loginContainer(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                'Forgot your login details?',
-                style: _textStyleGrey,
-              ),
-              TextButton(
-                onPressed: () {},
-                child: Text(
-                  'Get help logging in.',
-                  style: _textStyleBlueGrey,
-                ),
-              )
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                height: 1.0,
-                width: MediaQuery.of(context).size.width / 2.7,
-                color: Colors.grey,
-                child: ListTile(),
-              ),
-            ],
-          ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: <Widget>[
+          //     Text(
+          //       'Forgot your login details?',
+          //       style: _textStyleGrey,
+          //     ),
+          //     TextButton(
+          //       onPressed: () {},
+          //       child: Text(
+          //         'Get help logging in.',
+          //         style: _textStyleBlueGrey,
+          //       ),
+          //     )
+          //   ],
+          // ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: <Widget>[
+          //     Container(
+          //       height: 1.0,
+          //       width: MediaQuery.of(context).size.width / 2.7,
+          //       color: Colors.grey,
+          //       child: ListTile(),
+          //     ),
+          //   ],
+          // ),
         ],
       ),
     );
@@ -266,8 +268,10 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 }
+
 class AuthMethod {
-  Future<UserModel?> logInUser({required String email, required String password}) async {
+  Future<UserModel?> logInUser(
+      {required String email, required String password}) async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
@@ -293,5 +297,3 @@ class AuthMethod {
     }
   }
 }
-
-
