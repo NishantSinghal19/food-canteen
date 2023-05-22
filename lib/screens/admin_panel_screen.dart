@@ -97,8 +97,8 @@ class _AdminPageState extends State<AdminPage> {
                         onPressed: () async {
                           // Handle the accept button action
                           var oid = orderItems[index].orderId;
-                          Future<bool> ans = _updateOrderStatus(oid, 'Ready');
-                          if(await ans) orderItems[index].status = 'Accepted';
+                          bool ans = await _updateOrderStatus(oid, 'Accepted');
+                          if(ans) orderItems[index].status = 'Accepted';
                         },
                         child: const Icon(Icons.check, color: Color.fromARGB(255, 47, 255, 54),),
                       ),
@@ -191,20 +191,46 @@ class _AdminPageState extends State<AdminPage> {
   //   print('Order $ind $status');
   //   return true;
   // }
-  Future<bool> _updateOrderStatus(String orderId,String status) async {
-  try {
-    await FirebaseFirestore.instance
-        .collection('orders')
-        .doc(orderId)
-        .update({'status': status}); // Replace 'status' with the field name in your Firestore documents
 
-    print('Order $orderId $status');
+  Future<bool> _updateOrderStatus(String orderId, String status) async {
+  try {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('orders')
+        .where('orderId', isEqualTo: orderId)
+        .get();
+
+    // Iterate over the query snapshot to update the matching documents
+    for (DocumentSnapshot doc in querySnapshot.docs) {
+      await doc.reference.update({'status': status});
+    }
+
+    print('Successfully updated order status');
     return true;
   } catch (error) {
-    // Handle any errors that occur during the update process
-    print('Error accepting order: $error');
+    print('Error updating order status: $error');
     return false;
   }
 }
+
+//   Future<bool> _updateOrderStatus(String orderId,String status) async {
+    
+//   try {
+//     final DocumentReference documentRef =
+//           FirebaseFirestore.instance.collection('orders').where('orderId');
+
+//       await documentRef.update({'status': status});
+//     // await FirebaseFirestore.instance
+//     //     .collection('orders')
+//     //     .doc(orderId)
+//     //     .update({'status': status}); // Replace 'status' with the field name in your Firestore documents
+
+//     print('Order $orderId $status');
+//     return true;
+//   } catch (error) {
+//     // Handle any errors that occur during the update process
+//     print('Error accepting order: $error');
+//     return false;
+//   }
+// }
 
 }
