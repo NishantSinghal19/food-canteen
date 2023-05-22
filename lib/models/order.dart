@@ -5,7 +5,7 @@ class OrderItem {
   final List<CartItem> items;
   final double totalPrice;
   final DateTime orderTime;
-  final String status; //Pending, Accepted, Ready, Declined
+  String status; //Pending, Accepted, Ready, Declined
   OrderItem({
     required this.orderId,
     required this.items,

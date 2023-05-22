@@ -16,6 +16,8 @@ showSnackBar(String content, BuildContext context) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(content),
+      backgroundColor: Color.fromARGB(255, 255, 152, 49),
+      duration: Duration(milliseconds: 700),
     ),
   );
 }

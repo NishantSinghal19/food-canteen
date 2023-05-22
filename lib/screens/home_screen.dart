@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
         title: Text('Home Page'),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.logout),
+            icon: Icon(Icons.logout, color: Colors.white,),
             onPressed: () async {
               await AuthMethods().logOutUser();
               Navigator.pushReplacement(context,
