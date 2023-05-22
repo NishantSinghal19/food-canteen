@@ -65,7 +65,13 @@ class _AdminPageState extends State<AdminPage> {
             );
           }
           final orderItems = snapshot.data!;
-          return ListView.builder(
+          return RefreshIndicator(
+              onRefresh: () async {
+                setState(() {
+                  AdminPage(user: widget.user,);
+                });
+              },
+          child:ListView.builder(
               itemCount: orderItems.length,
               itemBuilder: (context, index) {
                 final order = orderItems[index];
@@ -134,7 +140,7 @@ class _AdminPageState extends State<AdminPage> {
                     ],
                   ),
                 ));
-              });
+              }));
         },
       ),
     );
