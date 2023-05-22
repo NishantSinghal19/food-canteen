@@ -1,10 +1,11 @@
-// ignore_for_file: unnecessary_import, unnecessary_brace_in_string_interps
+// ignore_for_file: unnecessary_import, unnecessary_brace_in_string_interps, unused_field
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:food_canteen/models/cart_item.dart';
 import 'package:food_canteen/models/order.dart';
 import 'package:food_canteen/models/user_model.dart';
+import 'dart:async';
 
 class AdminPage extends StatefulWidget {
   final UserModel user;
@@ -15,6 +16,25 @@ class AdminPage extends StatefulWidget {
 }
 
 class _AdminPageState extends State<AdminPage> {
+  late Timer _timer;
+  int _reloadInterval = 60; // Reload interval in seconds
+
+  @override
+  void initState() {
+    super.initState();
+    _timer = Timer.periodic(Duration(seconds: _reloadInterval), (timer) {
+      setState(() {
+        // Perform any necessary logic or update widget state here
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel(); // Cancel the timer when the widget is disposed
+    super.dispose();
+  }
+  
   @override
   Widget build(BuildContext context) {
     // Access the current user from the provider
@@ -76,7 +96,7 @@ class _AdminPageState extends State<AdminPage> {
                         ),
                         onPressed: () {
                           // Handle the accept button action
-                          bool ans = _acceptOrder(index);
+                          bool ans = _updateOrderStatus(index, 'Accepted');
                           if(ans) orderItems[index].status = 'Accepted';
                         },
                         child: const Icon(Icons.check, color: Color.fromARGB(255, 47, 255, 54),),
@@ -91,7 +111,7 @@ class _AdminPageState extends State<AdminPage> {
                               orderItems[index].status = 'Declined';
                            });  
                           // Handle the decline button action
-                          bool ans = _readyOrder(index);
+                          bool ans = _updateOrderStatus(index, 'Ready');
                           if(ans) orderItems[index].status = 'Ready';
                         },
                         child: const Text('Ready', style: TextStyle(color: Color.fromARGB(255, 255, 255, 255))),
@@ -103,7 +123,7 @@ class _AdminPageState extends State<AdminPage> {
                         ),
                         onPressed: () {
                           // Handle the decline button action
-                          bool ans = _declineOrder(index);
+                          bool ans = _updateOrderStatus(index, 'Declined');
                           if(ans) orderItems[index].status = 'Declined';
                         },
                         child: const Icon(Icons.close, color: Color.fromARGB(255, 255, 17, 0),),
@@ -161,24 +181,10 @@ class _AdminPageState extends State<AdminPage> {
   }
 
   // Handle the accept button action
-  bool _acceptOrder(num ind) {
-    // Replace this with your actual implementation
+  bool _updateOrderStatus(num ind, String status) {
           
-    print('Order $ind accepted');
+    print('Order $ind $status');
     return true;
   }
 
-  // Handle the decline button action
-  bool _declineOrder(num ind) {
-    // Replace this with your actual implementation
-    print('Order $ind declined');
-    return true;
-  }
-
-  // Handle the ready button action
-  bool _readyOrder(num ind) {
-    // Replace this with your actual implementation
-    print('Order $ind ready');
-    return true;
-  }
 }
