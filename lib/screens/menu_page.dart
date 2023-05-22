@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_canteen/models/cart_item.dart';
 import 'package:food_canteen/services/firestore_methods.dart';
+import 'package:food_canteen/utils/utils.dart';
 import 'package:provider/provider.dart';
 
 import '../models/menu_item.dart';
@@ -33,7 +34,7 @@ class _MenuPageState extends State<MenuPage> {
           future: menuItems,
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
-              return CircularProgressIndicator();
+              return Center(child: CircularProgressIndicator());
             }
             final menuItems = snapshot.data!;
          return ListView.builder(
@@ -50,14 +51,14 @@ class _MenuPageState extends State<MenuPage> {
               child: ListTile(
                   title: Text(menuItem.name, style: TextStyle(fontWeight: menuItem.isAvailable ? FontWeight.w500 : FontWeight.normal, fontSize: menuItem.isAvailable ? 18 : 14)),
                   subtitle: Text('\u20B9' + menuItem.price.toString(),  style: TextStyle(fontSize: menuItem.isAvailable ? 14 : 12)),
-                  trailing: Text(menuItem.isAvailable ? 'Available' : 'Not Available', style: TextStyle(color: menuItem.isAvailable ? Colors.green : Colors.red)),
-                  onTap: () {
+                  trailing: menuItem.isAvailable ? IconButton(onPressed: () {
                     cartProvider.addToCart(CartItem(
                       name: menuItem.name,
                       price: menuItem.price,
                       quantity: 1,
                     ));
-                  },
+                    showSnackBar('${menuItem.name} added to Cart', context);
+                  }, icon: Icon(Icons.add_shopping_cart_rounded, color: Colors.orangeAccent,)) : Text('Not Available', style: TextStyle(color: const Color.fromARGB(255, 255, 123, 123))),
                 ),
             );
           },

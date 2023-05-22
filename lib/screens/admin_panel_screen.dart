@@ -36,6 +36,7 @@ class _AdminPageState extends State<AdminPage> {
     final orders = fetchOrders();
 
     return Scaffold(
+      backgroundColor: Color.fromARGB(105, 253, 227, 202),
       body: FutureBuilder<List<OrderItem>>(
         future: orders,
         builder: (context, snapshot) {
@@ -49,32 +50,52 @@ class _AdminPageState extends State<AdminPage> {
               itemCount: orderItems.length,
               itemBuilder: (context, index) {
                 final order = orderItems[index];
+                String orderItemStr = "";
 
-                return ListTile(
-                  title: Text('Order ID: ${order.orderId}'),
+                order.items.forEach((item) {
+                  orderItemStr += '${item.name} (${item.quantity})\n';
+                });
+
+                return Container(
+                  decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0), // Border radius value
+                color: Color.fromARGB(255, 254, 250, 246) // Background color of the container
+                
+              ),
+              margin: EdgeInsets.fromLTRB(5,5,5,5),
+                  child: ListTile(
+                  title: Text('Order:\n${orderItemStr}'),
                   subtitle: Text(
                       'Total Price: \$${order.totalPrice.toStringAsFixed(2)}'),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: CircleBorder(eccentricity: 0.5)
+                        ),
                         onPressed: () {
                           // Handle the accept button action
-                          _acceptOrder(order.orderId);
+                          orderItems[index].status = 'Accepted';
+                          _acceptOrder(index);
                         },
-                        child: Text('Accept'),
+                        child: Icon(Icons.check, color: Color.fromARGB(255, 47, 255, 54),),
                       ),
                       SizedBox(width: 10),
                       ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: CircleBorder(eccentricity: 0.5)
+                        ),
                         onPressed: () {
                           // Handle the decline button action
-                          _declineOrder(order.orderId);
+                          orderItems[index].status = 'Declined';
+                          _declineOrder(index);
                         },
-                        child: Text('Decline'),
+                        child: Icon(Icons.close, color: Color.fromARGB(255, 255, 17, 0),),
                       ),
                     ],
                   ),
-                );
+                ));
               });
         },
       ),
@@ -125,14 +146,15 @@ class _AdminPageState extends State<AdminPage> {
   }
 
   // Handle the accept button action
-  void _acceptOrder(String orderId) {
+  void _acceptOrder(num ind) {
     // Replace this with your actual implementation
-    print('Order $orderId accepted');
+    
+    print('Order $ind accepted');
   }
 
   // Handle the decline button action
-  void _declineOrder(String orderId) {
+  void _declineOrder(num ind) {
     // Replace this with your actual implementation
-    print('Order $orderId declined');
+    print('Order $ind declined');
   }
 }
