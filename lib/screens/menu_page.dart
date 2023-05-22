@@ -28,13 +28,13 @@ class _MenuPageState extends State<MenuPage> {
     bool isAdmin = widget.user.role == Userrole.admin;
 
     return Scaffold(
-      backgroundColor: Color.fromARGB(105, 253, 227, 202),
+      backgroundColor: const Color.fromARGB(105, 253, 227, 202),
       body: 
         FutureBuilder<List<MenuItem>>(
           future: menuItems,
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }
             final menuItems = snapshot.data!;
          return ListView.builder(
@@ -44,13 +44,13 @@ class _MenuPageState extends State<MenuPage> {
             return Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.0), // Border radius value
-                color: Color.fromARGB(255, 254, 250, 246) // Background color of the container
+                color: const Color.fromARGB(255, 254, 250, 246) // Background color of the container
                 
               ),
-              margin: EdgeInsets.fromLTRB(5,5,5,5),
+              margin: const EdgeInsets.fromLTRB(5,5,5,5),
               child: ListTile(
                   title: Text(menuItem.name, style: TextStyle(fontWeight: menuItem.isAvailable ? FontWeight.w500 : FontWeight.normal, fontSize: menuItem.isAvailable ? 18 : 14)),
-                  subtitle: Text('\u20B9' + menuItem.price.toString(),  style: TextStyle(fontSize: menuItem.isAvailable ? 14 : 12)),
+                  subtitle: Text('\u20B9${menuItem.price}',  style: TextStyle(fontSize: menuItem.isAvailable ? 14 : 12)),
                   trailing: menuItem.isAvailable ? IconButton(onPressed: () {
                     cartProvider.addToCart(CartItem(
                       name: menuItem.name,
@@ -58,7 +58,7 @@ class _MenuPageState extends State<MenuPage> {
                       quantity: 1,
                     ));
                     showSnackBar('${menuItem.name} added to Cart', context);
-                  }, icon: Icon(Icons.add_shopping_cart_rounded, color: Colors.orangeAccent,)) : Text('Not Available', style: TextStyle(color: const Color.fromARGB(255, 255, 123, 123))),
+                  }, icon: const Icon(Icons.add_shopping_cart_rounded, color: Colors.orangeAccent,)) : const Text('Not Available', style: TextStyle(color: Color.fromARGB(255, 255, 123, 123))),
                 ),
             );
           },
@@ -71,7 +71,7 @@ class _MenuPageState extends State<MenuPage> {
                 // Handle the action for adding menu items
                 _showAddMenuItemDialog(context);
               },
-              child: Icon(Icons.add),
+              child: const Icon(Icons.add),
             )
           : null,
     );
@@ -98,10 +98,10 @@ class _MenuPageState extends State<MenuPage> {
       builder: (BuildContext context) {
         String itemName= '';
         double itemPrice= 0.0;
-        bool itemAvailability = false;
+        bool itemAvailability = true;
         String itemQuantity= '';
         return AlertDialog(
-          title: Text('Add Menu Item'),
+          title: const Text('Add Menu Item'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -109,7 +109,7 @@ class _MenuPageState extends State<MenuPage> {
                 onChanged: (value) {
                   itemName = value;
                 },
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Item Name',
                 ),
               ),
@@ -117,7 +117,7 @@ class _MenuPageState extends State<MenuPage> {
                 onChanged: (value) {
                   itemPrice = double.parse(value);
                 },
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Item Price',
                 ),
                 keyboardType: TextInputType.number,
@@ -126,7 +126,7 @@ class _MenuPageState extends State<MenuPage> {
                 onChanged: (value) {
                   itemQuantity = value;
                 },
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Item Quantity',
                 ),
                 keyboardType: TextInputType.number,
@@ -138,7 +138,7 @@ class _MenuPageState extends State<MenuPage> {
                     itemAvailability = value!;
                   });
                 },
-                title: Text('Availability'),
+                title: const Text('Availability'),
               ),
             ],
           ),
@@ -147,7 +147,7 @@ class _MenuPageState extends State<MenuPage> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () async {
@@ -161,14 +161,14 @@ class _MenuPageState extends State<MenuPage> {
                 // );
 
                 await FirestoreMethods()
-          .addnewitem(itemName, itemPrice, itemAvailability,int.parse(itemQuantity));
+          .addnewitem(itemName, itemPrice, itemAvailability,int.parse(itemQuantity != '' ? itemQuantity : '0'));
                 // Add the new menu item to the list
                 setState(() {
                   menuItems = FirestoreMethods().getItemList();
                 });
                 Navigator.pop(context);
               },
-              child: Text('Add'),
+              child: const Text('Add'),
             ),
           ],
         );
