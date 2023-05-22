@@ -21,7 +21,7 @@ class _AdminPageState extends State<AdminPage> {
     // Access the current user from the provider
 
     final currentUser = widget.user;
-
+    final uid = currentUser.uid;
     // Check if the user is an admin
     if (currentUser.role != 'admin') {
       // Redirect to another page or show an error message
@@ -33,7 +33,7 @@ class _AdminPageState extends State<AdminPage> {
     }
 
     // Fetch the order list from the database or any other source
-    final orders = fetchOrders();
+    final orders = fetchOrders(uid);
 
     return Scaffold(
       backgroundColor: Color.fromARGB(105, 253, 227, 202),
@@ -76,7 +76,11 @@ class _AdminPageState extends State<AdminPage> {
                         ),
                         onPressed: () {
                           // Handle the accept button action
-                          orderItems[index].status = 'Accepted';
+                              setState(() {
+                              orderItems[index].status = 'Accepted';
+                           });  
+                           
+                          
                           _acceptOrder(index);
                         },
                         child: Icon(Icons.check, color: Color.fromARGB(255, 47, 255, 54),),
@@ -87,8 +91,11 @@ class _AdminPageState extends State<AdminPage> {
                           shape: CircleBorder(eccentricity: 0.5)
                         ),
                         onPressed: () {
+                          setState(() {
+                              orderItems[index].status = 'Declined';
+                           });  
                           // Handle the decline button action
-                          orderItems[index].status = 'Declined';
+                          
                           _declineOrder(index);
                         },
                         child: Icon(Icons.close, color: Color.fromARGB(255, 255, 17, 0),),
@@ -104,7 +111,7 @@ class _AdminPageState extends State<AdminPage> {
 
   // Fetch orders from the database or any other source
 
-  Future<List<OrderItem>> fetchOrders() async {
+  Future<List<OrderItem>> fetchOrders(userId) async {
     List<OrderItem> orders = [];
 
     try {
@@ -132,6 +139,7 @@ class _AdminPageState extends State<AdminPage> {
           OrderItem order = OrderItem(
               orderId: orderId,
               totalPrice: totalPrice,
+              userId: userId,
               items: items,
               orderTime: orderTime);
           orders.add(order);
@@ -148,7 +156,7 @@ class _AdminPageState extends State<AdminPage> {
   // Handle the accept button action
   void _acceptOrder(num ind) {
     // Replace this with your actual implementation
-    
+          
     print('Order $ind accepted');
   }
 

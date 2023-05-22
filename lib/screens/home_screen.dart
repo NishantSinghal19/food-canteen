@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_canteen/screens/login_screen.dart';
+import 'package:food_canteen/screens/user_screen.dart';
 
 import '../models/menu_item.dart';
 import '../models/user_model.dart';
@@ -90,7 +92,7 @@ class _HomePageState extends State<HomePage> {
         if (widget.user!.role  == Userrole.admin) {
           return AdminPage(user: widget.user!);
         } else {
-          return Container();
+          return UserScreen(user: widget.user!);
         }
       default:
         return Container();
